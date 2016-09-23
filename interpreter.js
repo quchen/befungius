@@ -197,6 +197,26 @@ interpret.on(' ', function(state) {
     // Push a number
     return stack.push(state, parseInt(which, 16));
 
+}).on('N', function(state, settings, which) {
+    // Enter a long number
+    return stack.pop(state, function(state, numDigits) {
+        digits = [];
+        _.each(_.range(numDigits), function() {
+            state = stack.pop(state, function(state, digit) {
+                digits.unshift(digit);
+                return state;
+            });
+        });
+        result = _.reduce(
+            digits,
+            function(total, digit) {
+                return 10*total + digit;
+            },
+            0
+        );
+        return stack.push(state, result);
+    });
+
 }).on(['+', '-', '*'], function(state, settings, which) {
     // Add, subtract, multiply
     return stack.pop(state, function(state, val1, val2) {
@@ -287,6 +307,17 @@ interpret.on(' ', function(state) {
         return writeInstruction(state, instr, x, y);
     });
 
+}).on('J', function(state) {
+    // Longjump
+    return stack.pop(state, function(state, y, x) {
+        state = state.set('x', x);
+        state = state.set('y', y);
+        state = move(state, -1);
+        return state;
+    });
+}).on('S', function(state) {
+    // store current address
+    return stack.push(state, [state.get('x'), state.get('y')]);
 
     /*
      * Input/output
