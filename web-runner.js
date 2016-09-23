@@ -140,6 +140,8 @@ var Controls = React.createClass({
                 d.select(
                     { onChange: this.setDelay },
                     d.option({ value: 0 }, '0'),
+                    d.option({ value: 25 }, '25 ms'),
+                    d.option({ value: 50 }, '50 ms'),
                     d.option({ value: 100 }, '100 ms'),
                     d.option({ value: 200 }, '200 ms'),
                     d.option({ value: 500 }, '500 ms'),
@@ -172,7 +174,7 @@ var Stats = React.createClass({
                 { className: 'info' },
                 d.div(
                     null,
-                    'x: ', s.get('x'),', y: ', s.get('y'),', tick: ', s.get('tick'),', width: ', s.get('width'),', height: ', s.get('height')
+                    'x: ', s.get('x'),', y: ', s.get('y'),', tick: ', s.get('tick'),', width: ', s.get('width'),', height: ', s.get('height'),', direction: ', s.get('direction')
                 ),
                 d.div(
                     null,
